@@ -10,7 +10,15 @@ const controls = [
   { label: 'Meat', type: 'meat' },
 ];
 const buildControls = props => {
-  const { price, disabled, ingredientAdded, ingredientRemoved, ordered, purchasable } = props;
+  const {
+    price,
+    disabled,
+    ingredientAdded,
+    ingredientRemoved,
+    ordered,
+    purchasable,
+    isAuthenticated,
+  } = props;
   console.log(disabled);
   return (
     <div className={classes.BuildControls}>
@@ -32,7 +40,7 @@ const buildControls = props => {
         disabled={!purchasable}
         className={classes.OrderButton}
       >
-        ORDER NOW
+        {isAuthenticated ? 'ORDER NOW' : 'SIGN UP TO ORDER'}ORDER NOW
       </button>
     </div>
   );

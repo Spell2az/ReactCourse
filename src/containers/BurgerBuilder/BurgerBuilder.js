@@ -21,7 +21,15 @@ class BurgerBuilder extends Component {
   }
 
   purchaseHandler = () => {
-    this.setState({ purchasing: true });
+    const { isAuthenticated, history, onSetAuthRedirectPath } = this.props;
+    if (isAuthenticated) {
+      this.setState({ purchasing: true });
+    } else {
+      onSetAuthRedirectPath('/checkout');
+      history.push({
+        pathname: '/auth',
+      });
+    }
   };
 
   purchaseCanceledHandler = () => {
@@ -45,7 +53,14 @@ class BurgerBuilder extends Component {
 
   render() {
     const { purchasing } = this.state;
-    const { ingredients, onIngredientAdded, onIngredientRemoved, totalPrice, error } = this.props;
+    const {
+      ingredients,
+      onIngredientAdded,
+      onIngredientRemoved,
+      totalPrice,
+      error,
+      isAuthenticated,
+    } = this.props;
 
     let orderSummary = null;
     let burger = error ? <p>Ingredients can't be loaded!</p> : <Spinner />;
@@ -67,6 +82,7 @@ class BurgerBuilder extends Component {
             disabled={disabledInfo}
             purchasable={this.updatePurchaseState(ingredients)}
             ordered={this.purchaseHandler}
+            isAuthenticated={isAuthenticated}
           />
         </Fragment>
       );
@@ -91,16 +107,21 @@ class BurgerBuilder extends Component {
   }
 }
 
-const mapStateToProps = ({ burgerBuilderReducer: { ingredients, totalPrice, error } }) => ({
+const mapStateToProps = ({
+  burgerBuilderReducer: { ingredients, totalPrice, error },
+  authReducer: { userId },
+}) => ({
   ingredients,
   totalPrice,
   error,
+  isAuthenticated: userId !== null,
 });
 const mapDispatchToProps = dispatch => ({
   onIngredientAdded: ingredient => dispatch(actions.addIngredient(ingredient)),
   onIngredientRemoved: ingredient => dispatch(actions.removeIngredient(ingredient)),
   onInitIngredients: () => dispatch(actions.initIngredients()),
   onInitPurchase: () => dispatch(actions.purchaseInit()),
+  onSetAuthRedirectPath: path => dispatch(actions.setAuthRedirectPath(path)),
 });
 
 export default connect(

@@ -15,10 +15,10 @@ const purchaseBurgerStart = () => ({
   type: actionTypes.PURCHASE_BURGER_STARTED,
 });
 
-export const purchaseBurger = orderData => dispatch => {
+export const purchaseBurger = (orderData, token) => dispatch => {
   dispatch(purchaseBurgerStart());
   axios
-    .post('/orders.json', orderData)
+    .post(`/orders.json?auth=${token}`, orderData)
     .then(resp => {
       const orderId = resp.data.name;
       dispatch(purchaseBurgerSuccess(orderId, orderData));
@@ -42,10 +42,10 @@ const fetchOrdersFailed = error => ({
 
 export const fetchOrdersStarted = () => ({ type: actionTypes.FETCH_ORDERS_STARTED });
 
-export const fetchOrders = () => dispatch => {
+export const fetchOrders = token => dispatch => {
   dispatch(fetchOrdersStarted());
   axios
-    .get('/orders.json')
+    .get(`/orders.json?auth=${token}`)
     .then(res => {
       const fetchedOrders = Object.keys(res.data).map(key => ({
         ...res.data[key],
