@@ -8,7 +8,6 @@
   font-weight: bold;
   display: block;
   margin-bottom: 8px;
-
 }
 
 .InputElement {
@@ -25,4 +24,9 @@
 .InputElement:focus {
   outline: none;
   background-color: #ccc;
+}
+
+.Invalid {
+  border: 1px solid red;
+  background-color: salmon;
 }

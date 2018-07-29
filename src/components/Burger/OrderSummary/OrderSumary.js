@@ -22,10 +22,10 @@ class OrderSummary extends Component {
           <strong>Total Price: &#163; {price.toFixed(2)}</strong>
         </p>
         <p>Continue to Checkout?</p>
-        <Button clicked={cancel} btnType="Danger">
+        <Button type="button" clicked={cancel} btnType="Danger">
           CANCEL
         </Button>
-        <Button clicked={continued} btnType="Success">
+        <Button type="button" clicked={continued} btnType="Success">
           CONTINUE
         </Button>
       </Fragment>
