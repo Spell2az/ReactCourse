@@ -42,10 +42,10 @@ const fetchOrdersFailed = error => ({
 
 export const fetchOrdersStarted = () => ({ type: actionTypes.FETCH_ORDERS_STARTED });
 
-export const fetchOrders = token => dispatch => {
+export const fetchOrders = (token, userId) => dispatch => {
   dispatch(fetchOrdersStarted());
   axios
-    .get(`/orders.json?auth=${token}`)
+    .get(`/orders.json?auth=${token}&orderBy="userId"&equalTo"${userId}"`)
     .then(res => {
       const fetchedOrders = Object.keys(res.data).map(key => ({
         ...res.data[key],
